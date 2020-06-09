@@ -1,39 +1,45 @@
 #include <iostream>
 using namespace std;
+
 int main()
 {
     /* Enter your code here. Read input from STDIN. Print output to STDOUT */
-    int n;
-    cin >> n;
-    int a[n];
+    int n, k;
+    cin >> n >> k;
+    int a[n], cost = 0, v[n] = {0}, n1, n2;
     for (int i = 0; i < n; i++)
         cin >> a[i];
-    int num1 = 1, num2 = 2, wait = 3, flag = 0;
-    for (int i = 0; i < n; i++)
+
+    for (int i = 0; i < k; i++)
     {
-        if (a[i] != num1 && a[i] != num2)
+        cin >> n1 >> n2;
+        if (v[n1 - 1] == 0 && v[n2 - 1] == 0)
         {
-            flag = 1;
-            break;
-        }
-        num1 = a[i];
-        num2 = wait;
-        if (a[i] == 3)
-        {
-            wait = 3 - wait;
-            continue;
-        }
-        if (wait == 3)
-        {
-            wait = 3 - a[i];
-            continue;
+            if (a[n1 - 1] > a[n2 - 1])
+            {
+                cost += a[n2 - 1];
+            }
+            else
+            {
+                cost += a[n1 - 1];
+            }
+            v[n1 - 1] = 1;
+            v[n2 - 1] = 1;
         }
         else
-            wait = 3;
+        {
+            if (v[n2 - 1] == 0 && v[n1 - 1] == 1)
+                v[n2 - 1] = 1;
+            else
+                v[n1 - 1] = 1;
+        }
     }
-    if (flag == 0)
-        cout << "YES" << endl;
-    else
-        cout << "NO" << endl;
+    for (int i = 0; i < n; i++)
+    {
+        if (v[i] == 0)
+        {
+            cost += a[i];
+        }
+    }
+    cout << cost;
     return 0;
-}
